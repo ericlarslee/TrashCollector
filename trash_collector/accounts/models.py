@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     """Our custom user model that adds a new field to the default django user model"""
+    # zipcode = models.IntegerField(default=None)
     is_employee = models.BooleanField(default=False)
 
     def __str__(self):
