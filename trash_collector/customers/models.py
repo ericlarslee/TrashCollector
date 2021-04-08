@@ -8,7 +8,6 @@ from django.db import models
 class Customer(models.Model):
     name = models.CharField(max_length=50)
     user = models.ForeignKey('accounts.User', default=0, on_delete=models.CASCADE)
-    address = models.CharField(max_length=60, default=None)
     street = models.CharField(max_length=50, default=None)
     city = models.CharField(max_length=50, default=None)
     zipcode = models.IntegerField(default=None)

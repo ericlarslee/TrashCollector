@@ -5,6 +5,11 @@
 {% block content %}
   {% if user.is_authenticated %}
     Hello Customer {{ user.username }}!
+    <form action="{% url 'customers:index' %}" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit" />
+    </form>
   {% else %}
     <p>You are at the customer index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
