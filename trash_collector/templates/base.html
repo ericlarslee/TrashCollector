@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+</head>
+<body>
+{% if user.is_authenticated %}
+  {% for group in user.groups.all%}
+    {% if group.name == "Customers" %}
+    <p>Customer Navbar</p>
+    {% elif group.name == "Employees" %}
+    <p>Employee Navbar</p>
+    {% endif %}
+  {% endfor %}
+  <p><a href="{% url 'logout' %}">Log Out</a></p>
+{% endif %}
+  <main>
+    <h1>{% block header %} {% endblock %}</h1>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
+{# This is the parent view that can be inherited by any other views #}
+{# Todo: Add navbar links, link to stylesheets, style layout #}
