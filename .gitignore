@@ -136,5 +136,7 @@ trash_collector/settings.py
 settings.py
 __pycache__
 /__pycache__/
-__pycache__/
 *.pyc
+
+# migrations
+/migrations/
