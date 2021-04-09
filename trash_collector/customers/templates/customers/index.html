@@ -7,7 +7,18 @@
   {% if not customer %}
   Hello {{user.username}}!
   {%else%}
-  Hello {{customer.name}}!
+  <h2>Hello {{customer.name}}!</h2>
+  <div>
+    <h3>Account Details</h3>
+    {% if customer.account_status is True %}
+    <span>Account Status: Active</span><br>
+    {% else %}
+    <span>Account Status: Suspended</span>
+    {% endif %}
+    <span>Address: {{customer.street}},{{customer.city}} / {{customer.zipcode}}</span><br>
+    <span>Pickup Day: {{customer.pickup_day}}</span><br>
+    <span>Subtotal: {{customer.subtotal}}</span><br>
+  </div>
 {% endif%}
   {% else %}
     <p>You are at the customer index, but you are not logged in.</p>

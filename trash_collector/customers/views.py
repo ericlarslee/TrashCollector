@@ -32,6 +32,7 @@ def index(request):
                     'customer': customer
                 }
                 print(customer)
+                print(customer.account_status)
                 return render(request, 'customers/index.html', context)
         else:
             return render(request, 'customers/index.html')
