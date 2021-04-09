@@ -12,9 +12,9 @@ class Customer(models.Model):
     city = models.CharField(max_length=50, default=None)
     zipcode = models.IntegerField(default=None)
     account_status = models.BooleanField(default=True)
-    pickup_days = models.CharField(max_length=50, default=None)
-    specific_date = models.DateField(default=None)
-    subtotal = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    pickup_day = models.CharField(max_length=50, blank=True)
+    specific_date = models.DateField(null=True, blank=True)
+    subtotal = models.DecimalField(max_digits=5, decimal_places=2, blank=True)
 
     def __str__(self):
         return self.name

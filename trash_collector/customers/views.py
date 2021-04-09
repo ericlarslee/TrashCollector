@@ -1,5 +1,5 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, reverse, get_object_or_404
 from .models import Customer
 from django.forms import ModelForm
 # Create your views here.
@@ -26,25 +26,29 @@ def index(request):
         return render(request, 'customers/index.html')
     else:
         for customer in customers:
-            if user.pk != customer.user_id:
-                return render(request, 'customers/index.html')
+            if customer.user_id == user.pk:
+                customer = Customer.objects.get(user=user.id)
+                context = {
+                    'customer': customer
+                }
+                print(customer)
+                return render(request, 'customers/index.html', context)
         else:
-            customer = Customer.objects.get(user=user.id)
-            context = {
-                'customer': customer
-            }
-            print(customer)
-            return render(request, 'customers/index.html', context)
+            return render(request, 'customers/index.html')
 
 
 def create(request):
-    form = CustomerForm(request.POST or None)
-    context = {
-        'form': form
-    }
-
-    if form.is_valid():
-        form.save()
-        return redirect('customers:index')
+    user = request.user
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        street = request.POST.get('street')
+        city = request.POST.get('city')
+        zipcode = request.POST.get('zipcode')
+        pickup_day = request.POST.get('pickup_day')
+        new_customer = Customer(name=name, user=user, street=street, city=city, zipcode=zipcode,
+                                account_status=True, pickup_day=pickup_day, subtotal=0)
+        new_customer.save()
+        new_customer.clean_fields('specific_date')
+        return HttpResponseRedirect(reverse('customers:index'))
     else:
-        return render(request, 'customers/create.html', context)
+        return render(request, 'customers/create.html')
