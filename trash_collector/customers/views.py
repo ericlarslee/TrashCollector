@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, reverse, get_object_or_404
+from django.shortcuts import render, reverse, get_object_or_404, redirect
 from .models import Customer
 from django.forms import ModelForm
 # Create your views here.
@@ -10,7 +10,7 @@ from django.forms import ModelForm
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-        fields = '__all__'
+        fields = ['name', 'user', 'street', 'city', 'zipcode', 'specific_date', 'pickup_day', 'user', 'account_status', 'subtotal']
 
 
 def index(request):
@@ -52,3 +52,40 @@ def create(request):
         return HttpResponseRedirect(reverse('customers:index'))
     else:
         return render(request, 'customers/create.html')
+
+
+def update_account_info(request):
+    user = request.user
+    customer = get_object_or_404(Customer, user_id=user.pk)
+    form = CustomerForm(request.POST or None, instance=customer)
+    form.fields.pop('specific_date')
+    form.fields.pop('user')
+    form.fields.pop('subtotal')
+    form.fields.pop('account_status')
+    form.fields.pop('pickup_day')
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('customers:index'))
+    context ={
+        'form': form,
+        'customer': customer
+    }
+    return render(request, 'customers/update_account.html', context)
+
+def update_account_status(request):
+    user = request.user
+    customer = get_object_or_404(Customer, user_id=user.pk)
+    form = CustomerForm(request.POST or None, instance=customer)
+    form.fields.pop('specific_date')
+    form.fields.pop('user')
+    form.fields.pop('subtotal')
+    form.fields.pop('account_status')
+    form.fields.pop('pickup_day')
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('customers:index'))
+    context ={
+        'form': form,
+        'customer': customer
+    }
+    return render(request, 'customers/update_account.html', context)

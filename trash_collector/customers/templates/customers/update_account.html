@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}{% block header %} Update Account Info {% endblock %}{% endblock %}
+
+{% block content %}
+<form action="{% url 'customers:update_account_info' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Account Information</button>
+  </form>
+{% endblock %}
