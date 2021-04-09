@@ -13,7 +13,7 @@
     {% if customer.account_status is True %}
     <span>Account Status: Active</span><br>
     {% else %}
-    <span>Account Status: Suspended</span>
+    <span>Account Status: Suspended</span><br>
     {% endif %}
     <span>Address: {{customer.street}},{{customer.city}} / {{customer.zipcode}}</span><br>
     <span>Pickup Day: {{customer.pickup_day}}</span><br>

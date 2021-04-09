@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404, redirect
 from .models import Customer
 from django.forms import ModelForm
+from datetime import datetime, timedelta
 # Create your views here.
 
 # TODO: Create a function for each path created in customers/urls.py. Each will need a template as well.
@@ -93,6 +94,11 @@ def update_account_status(request):
         'form': form,
         'customer': customer
     }
+
+    start_date = datetime.today()
+    # end_date = start_date + timedelta(days=7)
+
+
     return render(request, 'customers/account_status.html', context)
 
 
