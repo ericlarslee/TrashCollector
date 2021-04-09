@@ -79,7 +79,10 @@ def update_account_status(request):
     form.fields.pop('specific_date')
     form.fields.pop('user')
     form.fields.pop('subtotal')
-    form.fields.pop('account_status')
+    form.fields.pop('street')
+    form.fields.pop('name')
+    form.fields.pop('city')
+    form.fields.pop('zipcode')
     form.fields.pop('pickup_day')
     if form.is_valid():
         form.save()
@@ -88,4 +91,4 @@ def update_account_status(request):
         'form': form,
         'customer': customer
     }
-    return render(request, 'customers/update_account.html', context)
+    return render(request, 'customers/account_status.html', context)
