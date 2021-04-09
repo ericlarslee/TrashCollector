@@ -83,7 +83,7 @@ def update_account_info(request):
     }
     return render(request, 'customers/update_account.html', context)
 
-
+#If suspense data is not date.today, account must stay active
 def update_account_status(request):
     user = request.user
     customer = get_object_or_404(Customer, user_id=user.pk)
@@ -101,7 +101,8 @@ def update_account_status(request):
     today_date = date.today()
 
     context = {
-        'form': form
+        'form': form,
+        'customer': customer
     }
 
     if form.is_valid():
@@ -111,6 +112,16 @@ def update_account_status(request):
         return HttpResponseRedirect(reverse('customers:index'))
     else:
         return render(request, 'customers/account_status.html', context)
+
+# Button needs to change account status when suspended
+def reactivate_account(request):
+    user = request.user
+    customer = get_object_or_404(Customer, user_id=user.pk)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, instance=customer)
+        if form.is_valid():
+            form.instance.account_status = True
+    return HttpResponseRedirect(reverse('customers:index'))
 
 
 def change_pickup_day(request):

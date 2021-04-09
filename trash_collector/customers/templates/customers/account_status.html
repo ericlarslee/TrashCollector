@@ -3,10 +3,14 @@
 {% block title %}{% block header %} Update Account Status {% endblock %}{% endblock %}
 
 {% block content %}
+{{customer.name}}<br>
     {% if customer.account_status is True %}
     <span>Account Status: Active</span><br>
     {% else %}
     <span>Account Status: Suspended</span><br>
+    {% endif %}
+    {% if customer.account_status is False %}
+    <a href="{% url 'customers:reactivate_account' %}" ><button>Re-Activate Account</button></a>
     {% endif %}
 <form action="{% url 'customers:update_account_status' %}" enctype="multipart/form-data" method="post">
     {% csrf_token %}
