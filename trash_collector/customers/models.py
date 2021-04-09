@@ -12,6 +12,8 @@ class Customer(models.Model):
     city = models.CharField(max_length=50, default=None)
     zipcode = models.IntegerField(default=None)
     account_status = models.BooleanField(default=True)
+    suspend_start = models.DateField(null=True, blank=True)
+    suspend_end = models.DateField(null=True, blank=True)
     pickup_day = models.CharField(max_length=50, blank=True)
     specific_date = models.DateField(null=True, blank=True)
     subtotal = models.DecimalField(max_digits=5, decimal_places=2, blank=True)

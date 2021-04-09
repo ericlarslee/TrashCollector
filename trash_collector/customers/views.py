@@ -1,8 +1,10 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404, redirect
 from .models import Customer
-from django.forms import ModelForm
-from datetime import datetime, timedelta
+from django.forms import ModelForm, SelectDateWidget
+from datetime import date
+from django.contrib.admin.widgets import AdminDateWidget
+from django.forms.fields import DateField
 # Create your views here.
 
 # TODO: Create a function for each path created in customers/urls.py. Each will need a template as well.
@@ -11,7 +13,14 @@ from datetime import datetime, timedelta
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-        fields = ['name', 'user', 'street', 'city', 'zipcode', 'specific_date', 'pickup_day', 'user', 'account_status', 'subtotal']
+        fields = ['name', 'user', 'street', 'city', 'zipcode', 'specific_date', 'pickup_day', 'user',
+                  'account_status', 'subtotal', 'suspend_start', 'suspend_end']
+        widgets = {
+            'suspend_start': SelectDateWidget(attrs={
+                'min': '2021-04-09', 'max': '2021-12-31'
+            }),
+            'suspend_end': SelectDateWidget()
+        }
 
 
 def index(request):
@@ -82,24 +91,26 @@ def update_account_status(request):
     form.fields.pop('specific_date')
     form.fields.pop('user')
     form.fields.pop('subtotal')
-    form.fields.pop('street')
+    form.fields.pop('pickup_day')
     form.fields.pop('name')
+    form.fields.pop('street')
     form.fields.pop('city')
     form.fields.pop('zipcode')
-    form.fields.pop('pickup_day')
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect(reverse('customers:index'))
-    context ={
-        'form': form,
-        'customer': customer
+    form.fields.pop('account_status')
+
+    today_date = date.today()
+
+    context = {
+        'form': form
     }
 
-    start_date = datetime.today()
-    # end_date = start_date + timedelta(days=7)
-
-
-    return render(request, 'customers/account_status.html', context)
+    if form.is_valid():
+        form.save()
+        if today_date == customer.suspend_start:
+            customer.account_status = False
+        return HttpResponseRedirect(reverse('customers:index'))
+    else:
+        return render(request, 'customers/account_status.html', context)
 
 
 def change_pickup_day(request):
