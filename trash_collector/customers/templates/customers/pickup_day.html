@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}{% block header %} Pickup Day / One-Time Pickup {% endblock %}{% endblock %}
+
+{% block content %}
+<form action="{% url 'customers:update_account_status' %}" method="post">
+    {% csrf_token %}
+    <label>Pickup Day:</label><input type="text" name="pickup_day" id="pickup_day"><br>
+    <label>Specific Date:</label><input type="date" name="specific_date" id="specific_date">
+    <button type="submit">Update Account Status</button>
+  </form>
+{% endblock %}

@@ -72,6 +72,7 @@ def update_account_info(request):
     }
     return render(request, 'customers/update_account.html', context)
 
+
 def update_account_status(request):
     user = request.user
     customer = get_object_or_404(Customer, user_id=user.pk)
@@ -92,3 +93,16 @@ def update_account_status(request):
         'customer': customer
     }
     return render(request, 'customers/account_status.html', context)
+
+
+def change_pickup_day(request):
+    user = request.user
+    customer = get_object_or_404(Customer, user_id=user.pk)
+    if request.method == 'POST':
+        customer.pickup_day = request.POST.get('pickup_day')
+        customer.specific_date = request.POST.get('specific_date')
+
+        customer.save()
+        return HttpResponseRedirect(reverse('customers:index'))
+    else:
+        return render(request, 'customers/pickup_day.html')
