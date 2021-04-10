@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{% block header %} Activate Account {% endblock %}{% endblock %}
+
+{% block content %}
+{{customer.name}}<br>
+    {% if customer.account_status is True %}
+    <span>Account is currently active!</span><br>
+    {% else %}
+    <span>Account Status: Suspended</span><br>
+    {% endif %}
+    {% if customer.account_status is False %}
+    <form action="{% url 'customers:reactivate_account' %}" method='POST'>
+        {% csrf_token %}
+    <button name="activate" type="submit" value="Activate">Re-Activate Account</button>
+    </form>
+    {% endif %}
+{% endblock %}

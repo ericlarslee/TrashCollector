@@ -9,14 +9,10 @@
     {% else %}
     <span>Account Status: Suspended</span><br>
     {% endif %}
-    {% if customer.account_status is False %}
-    <a href="{% url 'customers:reactivate_account' %}" ><button>Re-Activate Account</button></a>
-    {% endif %}
+
 <form action="{% url 'customers:update_account_status' %}" enctype="multipart/form-data" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-<!--    <label>Suspend From:</label><input type="date" name="start_date" id="start_date" min="2021-04-01" max="2021-12-31">-->
-<!--    <label>To:</label><input type="date" name="end_date" id="end_date" min="2021-04-01" max="2021-12-31">-->
     <button type="submit">Update Account Status</button>
   </form>
 {% endblock %}

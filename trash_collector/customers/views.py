@@ -1,10 +1,11 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, reverse, get_object_or_404, redirect
+from django.db.models import F
 from .models import Customer
 from django.forms import ModelForm, SelectDateWidget
 from datetime import date
-from django.contrib.admin.widgets import AdminDateWidget
-from django.forms.fields import DateField
+
+
 # Create your views here.
 
 # TODO: Create a function for each path created in customers/urls.py. Each will need a template as well.
@@ -84,6 +85,8 @@ def update_account_info(request):
     return render(request, 'customers/update_account.html', context)
 
 #If suspense data is not date.today, account must stay active
+
+
 def update_account_status(request):
     user = request.user
     customer = get_object_or_404(Customer, user_id=user.pk)
@@ -114,14 +117,23 @@ def update_account_status(request):
         return render(request, 'customers/account_status.html', context)
 
 # Button needs to change account status when suspended
+
+
 def reactivate_account(request):
+    print('Activate!!!')
     user = request.user
     customer = get_object_or_404(Customer, user_id=user.pk)
-    if request.method == 'POST':
-        form = CustomerForm(request.POST, instance=customer)
-        if form.is_valid():
-            form.instance.account_status = True
-    return HttpResponseRedirect(reverse('customers:index'))
+
+    context = {
+        'customer': customer
+    }
+
+    if request.method == 'POST' and 'activate' in request.POST:
+        customer.account_status = True
+        customer.save()
+        return redirect('customers:index')
+    else:
+        return render(request, 'customers/activate_account.html', context)
 
 
 def change_pickup_day(request):
