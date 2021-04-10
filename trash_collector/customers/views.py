@@ -124,9 +124,9 @@ def update_account_status(request):
     else:
         return render(request, 'customers/account_status.html', context)
 
-#Might be able to insert into update account status function
 
 
+#Might be able to insert entire function into update account status function
 def reactivate_account(request):
     print('Activate!!!')
     user = request.user
@@ -147,11 +147,17 @@ def reactivate_account(request):
 def change_pickup_day(request):
     user = request.user
     customer = get_object_or_404(Customer, user_id=user.pk)
+    context = {
+        'customer': customer
+    }
     if request.method == 'POST':
         customer.pickup_day = request.POST.get('pickup_day')
         customer.specific_date = request.POST.get('specific_date')
 
-        customer.save()
-        return HttpResponseRedirect(reverse('customers:index'))
+        if customer.specific_date == '':
+            customer.specific_date = None
+
+            customer.save()
+        return HttpResponseRedirect(reverse('customers:index'), context)
     else:
         return render(request, 'customers/pickup_day.html')

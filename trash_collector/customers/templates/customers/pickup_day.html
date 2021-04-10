@@ -3,10 +3,33 @@
 {% block title %}{% block header %} Pickup Day / One-Time Pickup {% endblock %}{% endblock %}
 
 {% block content %}
-<form action="{% url 'customers:update_account_status' %}" method="post">
+<table>
+    <tr>
+    <th>Rates</th>
+    </tr>
+  <tr>
+    <td>One Time Pickup</td>
+    <td>- $50.00 -</td>
+  </tr>
+  <tr>
+    <td>Weekly Pickup</td>
+    <td>- $35.00 -</td>
+  </tr>
+  <!-- etc -->
+</table><br>
+<form action="{% url 'customers:change_pickup_day' %}" method="post">
     {% csrf_token %}
-    <label>Pickup Day:</label><input type="text" name="pickup_day" id="pickup_day"><br>
-    <label>Specific Date:</label><input type="date" name="specific_date" id="specific_date">
+<!--    <label>Pickup Day:</label><input type="text" name="pickup_day" id="pickup_day"><br>-->
+    <label for="pickup_day">Select Pickup Day: </label>
+    <select name="pickup_day" id="pickup_day">
+        <option value="N/A"></option>
+        <option value="Monday">Monday</option>
+        <option name="pickup_day" value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+    </select>
+    <label>Specific Date: </label><input type="date" name="specific_date" id="specific_date">
     <button type="submit">Update Account Status</button>
   </form>
 {% endblock %}
