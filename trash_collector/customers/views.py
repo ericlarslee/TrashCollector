@@ -1,6 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, reverse, get_object_or_404, redirect
-from django.db.models import F
 from .models import Customer
 from django.forms import ModelForm, SelectDateWidget
 from datetime import date
@@ -16,11 +15,17 @@ class CustomerForm(ModelForm):
         model = Customer
         fields = ['name', 'user', 'street', 'city', 'zipcode', 'specific_date', 'pickup_day', 'user',
                   'account_status', 'subtotal', 'suspend_start', 'suspend_end']
+        labels = {
+            'name': 'Name',
+            'street': 'Street Address',
+            'city': 'City',
+            'suspend_end': 'Suspend End',
+            'suspend_start': 'Suspend Start'
+
+        }
         widgets = {
-            'suspend_start': SelectDateWidget(attrs={
-                'min': '2021-04-09', 'max': '2021-12-31'
-            }),
-            'suspend_end': SelectDateWidget()
+            'suspend_start': SelectDateWidget(years=range(2021, 2021)),
+            'suspend_end': SelectDateWidget(years=range(2021, 2021))
         }
 
 
@@ -116,7 +121,7 @@ def update_account_status(request):
     else:
         return render(request, 'customers/account_status.html', context)
 
-# Button needs to change account status when suspended
+#Might be able to insert into update account status function
 
 
 def reactivate_account(request):
