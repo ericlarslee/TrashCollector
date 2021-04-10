@@ -33,9 +33,6 @@ def index(request):
     # get the logged in user within any view function
     user = request.user
     print(user)
-    # This will be useful while creating a customer to assign the logged in user as the user foreign key
-    # Will also be useful in any function that needs
-    #if user does not exist
     customers = Customer.objects.all()
 
     if len(customers) == 0:
@@ -112,12 +109,18 @@ def update_account_status(request):
         'form': form,
         'customer': customer
     }
-
+#Allow customers to indicate when they want to stop service, change account status in redirect(customers:index)
     if form.is_valid():
         form.save()
-        if today_date == customer.suspend_start:
+        # Checks if suspend date has started, will suspend account if True
+        if customer.suspend_start <= today_date <= customer.suspend_end:
             customer.account_status = False
-        return HttpResponseRedirect(reverse('customers:index'))
+            print('pass')
+            customer.save()
+        else:
+            customer.account_status = True
+            customer.save()
+        return redirect('customers:index')
     else:
         return render(request, 'customers/account_status.html', context)
 
