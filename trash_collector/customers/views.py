@@ -58,9 +58,8 @@ def create(request):
         street = request.POST.get('street')
         city = request.POST.get('city')
         zipcode = request.POST.get('zipcode')
-        pickup_day = request.POST.get('pickup_day')
         new_customer = Customer(name=name, user=user, street=street, city=city, zipcode=zipcode,
-                                account_status=True, pickup_day=pickup_day, subtotal=0)
+                                account_status=True, pickup_day='N/A', subtotal=0)
         new_customer.save()
         new_customer.clean_fields('specific_date')
         return HttpResponseRedirect(reverse('customers:index'))
@@ -77,6 +76,8 @@ def update_account_info(request):
     form.fields.pop('subtotal')
     form.fields.pop('account_status')
     form.fields.pop('pickup_day')
+    form.fields.pop('suspend_start')
+    form.fields.pop('suspend_end')
     if form.is_valid():
         form.save()
         return HttpResponseRedirect(reverse('customers:index'))
@@ -155,6 +156,7 @@ def change_pickup_day(request):
         customer.pickup_day = request.POST.get('pickup_day')
         customer.specific_date = request.POST.get('specific_date')
 
+        #If not pickup date is selected value will equal 'N/A'
         value = 'N/A'
 
         if customer.specific_date == '':
