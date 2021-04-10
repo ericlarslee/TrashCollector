@@ -44,9 +44,9 @@ def index(request):
                 context = {
                     'customer': customer
                 }
-                print(customer)
-                print(customer.account_status)
+
                 return render(request, 'customers/index.html', context)
+
         else:
             return render(request, 'customers/index.html')
 
@@ -150,14 +150,29 @@ def change_pickup_day(request):
     context = {
         'customer': customer
     }
+    days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     if request.method == 'POST':
         customer.pickup_day = request.POST.get('pickup_day')
         customer.specific_date = request.POST.get('specific_date')
 
+        value = 'N/A'
+
         if customer.specific_date == '':
             customer.specific_date = None
+            if customer.pickup_day == value:
+                customer.subtotal = 0
+            elif customer.pickup_day in days_of_week:
+                customer.subtotal = 35
+            customer.save()
+        else:
+            if customer.pickup_day == value:
+                customer.subtotal = 50
+
+            elif customer.pickup_day in days_of_week:
+                customer.subtotal = 85
 
             customer.save()
+
         return HttpResponseRedirect(reverse('customers:index'), context)
     else:
         return render(request, 'customers/pickup_day.html')
