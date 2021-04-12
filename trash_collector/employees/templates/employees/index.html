@@ -4,8 +4,21 @@
 
 {% block content %}
   {% if user.is_authenticated %}
-    Hello Employee {{ user.username }}!
-
+    Hello {{employee.name}}!
+<table>
+  <tr>
+    <th>Customers</th>
+    <th>Address</th>
+    <th>Pickup Confirmation</th>
+  </tr>
+  {% for customer in customers %}
+  <tr>
+    <td>{{customer.name}}</td>
+    <td>{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
+    <td>Pickup Completed: <input type="checkbox" name="confirm_pickup" id="confirm_pickup"></td>
+  </tr>
+  {% endfor %}
+</table>
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>

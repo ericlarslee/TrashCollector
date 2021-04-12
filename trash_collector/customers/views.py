@@ -61,7 +61,6 @@ def create(request):
         new_customer = Customer(name=name, user=user, street=street, city=city, zipcode=zipcode,
                                 account_status=True, pickup_day='N/A', subtotal=0)
         new_customer.save()
-        new_customer.clean_fields('specific_date')
         return HttpResponseRedirect(reverse('customers:index'))
     else:
         return render(request, 'customers/create.html')

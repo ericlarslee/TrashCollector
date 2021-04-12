@@ -30,8 +30,9 @@ def index(request):
                     customers = Customer.objects.all()
                     customer_list = []
                     today = day_name()
+                    today_date = date.today()
                     for customer in customers:
-                        if customer.pickup_day == today:
+                        if customer.pickup_day == today or customer.specific_date == today_date:
                             customer_list.append(customer)
                     for customer in customer_list:
                         if customer.zipcode != employee.zipcode:
@@ -64,36 +65,13 @@ def update(request):
         new_employee.save()
         return HttpResponseRedirect(reverse('employees:index'))
     else:
-        context = {
-            'employee': employee
-        }
-        return render(request, 'employees/update_account.html', context)
+        return render(request, 'employees/update_account.html')
 
 
 def day_name():
     today_day = date.today()
     today_day = calendar.day_name[today_day.weekday()]
     return today_day
-
-
-def today_customer_list(request):
-    customer_group = Group.objects.get(name="Customers")
-    customers = customer_group.user_set_all()
-    employee = request.user
-    customer_list = []
-    today = day_name()
-    for customer in customers:
-        if customer.pickup_day == today:
-            customer_list.append(customer)
-    for customer in customer_list:
-        if customer.zipcode != employee.zipcode:
-            customer_list.remove(customer)
-        if not customer.account_status:
-            customer_list.remove(customer)
-    context = {
-        'customers': customer_list
-    }
-    return render(request, 'employees/index.html', context)
 
 
 def daily_customer_list(request):

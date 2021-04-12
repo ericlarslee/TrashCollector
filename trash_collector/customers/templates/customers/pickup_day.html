@@ -3,23 +3,8 @@
 {% block title %}{% block header %} Pickup Day / One-Time Pickup {% endblock %}{% endblock %}
 
 {% block content %}
-<table>
-    <tr>
-    <th>Rates</th>
-    </tr>
-  <tr>
-    <td>One Time Pickup</td>
-    <td>- $50.00 -</td>
-  </tr>
-  <tr>
-    <td>Weekly Pickup</td>
-    <td>- $35.00 -</td>
-  </tr>
-  <!-- etc -->
-</table><br>
 <form action="{% url 'customers:change_pickup_day' %}" method="post">
     {% csrf_token %}
-<!--    <label>Pickup Day:</label><input type="text" name="pickup_day" id="pickup_day"><br>-->
     <label for="pickup_day">Select Pickup Day: </label>
     <select name="pickup_day" id="pickup_day">
         <option value="N/A"></option>
