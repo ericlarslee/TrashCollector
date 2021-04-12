@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}{% block header %} Upcoming Pickups {% endblock %}{% endblock %}
+
+{% block content %}
+<form action="{% url 'employees:upcoming_pickups' %}" enctype="multipart/form-data" method="post">
+{% csrf_token %}
+<!--<select name="selected_day" id="selected_day">-->
+<!--    <option value="Monday">Monday</option>-->
+<!--    <option value="Tuesday">Tuesday</option>-->
+<!--    <option value="Wednesday">Wednesday</option>-->
+<!--    <option value="Thursday">Thursday</option>-->
+<!--    <option value="Friday">Friday</option>-->
+<!--</select>-->
+<input type="date" name="selected_day" id="selected_day">
+<input type="submit" value="Submit">
+</form>
+<table>
+  <tr>
+    <th>Customers</th>
+    <th>Address</th>
+    <th>Pickup Day</th>
+    <th>One-Time Pickup</th>
+  </tr>
+  {% for customer in customers %}
+  <tr>
+    <td>{{customer.name}}</td>
+    <td>{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
+    <td>{{customer.pickup_day}}</td>
+    <td>{{customer.specific_date}}</td>
+  </tr>
+  {% endfor %}
+</table>
+  {% endblock %}

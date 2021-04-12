@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404
 from .models import Employee
 from django.apps import apps
-from datetime import date
+from datetime import date, datetime
 import calendar
 from django.forms import ModelForm
 from django.contrib.auth.models import Group
@@ -74,18 +74,33 @@ def day_name():
     return today_day
 
 
-def daily_customer_list(request):
-    customer_group = Group.objects.get(name="Customers")
-    customers = customer_group.user_set_all()
-    employee = request.user
-    customer_today_list = []
-    today = day_name()
-    for customer in customers:
-        if customer.pickup_day == today:
-            customer_today_list.append(customer)
-    if customer.zipcode != employee.zipcode:
-        customer_today_list.remove(customer)
-    context = {
-        'customers': customer_today_list
+def upcoming_pickups(request):
+    Customer = apps.get_model('customers.Customer')
+    customers = Customer.objects.all()
+    user = request.user
+    today = date.today()
+    employee = Employee.objects.get(user=user.id)
+    # filtered = Customer.objects.all().filter(zipcode=employee.zipcode, account_status=True)
+    # filtered_list = list(filtered)
+    if request.method == 'POST':
+        selected_day = request.POST.get('selected_day')
+        date_converter = selected_day.strptime( '%Y-%B-%d')
+        selected_day_name = calendar.day_name[selected_day.weekday()]
+        customer_list = []
+        for customer in customers:
+            # Check for selected day from employee drop down
+            if customer.zipcode == employee.zipcode and customer.account_status is True:
+                customer_list.append(customer)
+                if customer.pickup_day is not selected_day_name or customer.specific_date is not selected_day:
+                    customer_list.remove(customer)
+            context = {
+                'customers': customer_list,
+                'date': today
+            }
+            return render(request, 'employees/upcoming_pickups.html', context)
+    context_main = {
+        'employee': employee,
+        'customers': customers
     }
-    return render(request, 'employees/index.html', context)
+
+    return render(request, 'employees/upcoming_pickups.html', context_main)
