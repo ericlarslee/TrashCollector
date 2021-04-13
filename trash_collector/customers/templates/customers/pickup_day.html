@@ -3,6 +3,19 @@
 {% block title %}{% block header %} Pickup Day / One-Time Pickup {% endblock %}{% endblock %}
 
 {% block content %}
+<table>
+    <tr>
+        <th>Rates</th>
+    </tr>
+    <tr>
+        <td>One-Time</td>
+        <td>- $50 -</td>
+    </tr>
+    <tr>
+        <td>Weekly</td>
+        <td>- $30 -</td>
+    </tr>
+</table>
 <form action="{% url 'customers:change_pickup_day' %}" method="post">
     {% csrf_token %}
     <label for="pickup_day">Select Pickup Day: </label>
