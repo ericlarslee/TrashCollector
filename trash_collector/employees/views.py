@@ -7,7 +7,6 @@ from django.apps import apps
 from datetime import date, datetime, timedelta
 import calendar
 from django.forms import ModelForm
-from django.contrib.auth.models import Group
 
 
 # Create your views here.
@@ -36,7 +35,7 @@ def index(request):
     # Get the Customer model from the other app, it can now be used to query the db
     user = request.user
     employees = Employee.objects.all()
-    if len(employees) == 0:
+    if not Employee.objects.filter(user_id=user.id):
         return render(request, 'employees/update_account.html')
     else:
         for employee in employees:
