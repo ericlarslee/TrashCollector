@@ -1,8 +1,10 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404
 from .models import Employee
+from django import forms
+from django.contrib.admin import widgets
 from django.apps import apps
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import calendar
 from django.forms import ModelForm
 from django.contrib.auth.models import Group
@@ -12,7 +14,24 @@ from django.contrib.auth.models import Group
 
 # TODO: Create a function for each path created in employees/urls.py. Each will need a template as well.
 
- #this index seems redundant and unneeded compared to the simple import
+class EmployeeForm(ModelForm):
+    class Meta:
+        model = Employee
+        fields = ['name', 'zipcode']
+        labels = {
+            'name': 'Name',
+            'zipcode': 'Zipcode'
+        }
+
+
+class EmployeeDateSelectionForm(forms.Form):
+    today = date.today()
+    end_date = today + timedelta(days=6)
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.widgets.DateInput(attrs={'type': 'date', 'min': today, 'max': end_date}))
+
+
 def index(request):
     # Get the Customer model from the other app, it can now be used to query the db
     user = request.user
@@ -46,16 +65,6 @@ def index(request):
                     return render(request, 'employees/index.html', context)
 
 
-class EmployeeForm(ModelForm):
-    class Meta:
-        model = Employee
-        fields = ['name', 'zipcode']
-        labels = {
-            'name': 'Name',
-            'zipcode': 'Zipcode'
-        }
-
-
 def update(request):
     user = request.user
     if request.method == 'POST':
@@ -78,29 +87,28 @@ def upcoming_pickups(request):
     Customer = apps.get_model('customers.Customer')
     customers = Customer.objects.all()
     user = request.user
-    today = date.today()
     employee = Employee.objects.get(user=user.id)
-    # filtered = Customer.objects.all().filter(zipcode=employee.zipcode, account_status=True)
-    # filtered_list = list(filtered)
-    if request.method == 'POST':
-        selected_day = request.POST.get('selected_day')
-        date_converter = selected_day.strptime( '%Y-%B-%d')
-        selected_day_name = calendar.day_name[selected_day.weekday()]
-        customer_list = []
-        for customer in customers:
-            # Check for selected day from employee drop down
-            if customer.zipcode == employee.zipcode and customer.account_status is True:
-                customer_list.append(customer)
-                if customer.pickup_day is not selected_day_name or customer.specific_date is not selected_day:
-                    customer_list.remove(customer)
-            context = {
-                'customers': customer_list,
-                'date': today
-            }
-            return render(request, 'employees/upcoming_pickups.html', context)
+    form = EmployeeDateSelectionForm(request.POST or None)
+
     context_main = {
         'employee': employee,
-        'customers': customers
+        'customers': customers,
+        'form': form
     }
+
+    if form.is_valid():
+        selected_date = form.cleaned_data.get('date')
+        selected_day_name = selected_date.strftime('%A')
+
+        for customer in customers:
+            if customer.zipcode == employee.zipcode and customer.account_status is True:
+                filtered_date = customers.filter(specific_date=selected_date)
+                filtered_day = customers.filter(pickup_day=selected_day_name)
+                filtered = filtered_date | filtered_day
+                context = {
+                    'customers': filtered,
+                    'form': form
+                }
+                return render(request, 'employees/upcoming_pickups.html', context)
 
     return render(request, 'employees/upcoming_pickups.html', context_main)
