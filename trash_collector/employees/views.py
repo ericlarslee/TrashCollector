@@ -38,36 +38,38 @@ def index(request):
         employee = Employee.objects.get(user=user.id)
     except:
         return render(request, 'employees/update_account.html')
-    else:
+    if employee:
         Customer = apps.get_model('customers.Customer')
         customers = Customer.objects.all()
         customer_list = []
         today = day_name()
+        pickup_status = False
         today_date = date.today()
 
         context = {
             'customers': customer_list,
-            'employee': employee
+            'employee': employee,
+            'pickup': pickup_status
         }
 
         for customer in customers:
             if customer.pickup_day == today or customer.specific_date == today_date:
                 customer_list.append(customer)
         for customer in customer_list:
-            customer.is_collected = False
             if customer.zipcode != employee.zipcode:
                 customer_list.remove(customer)
             elif not customer.account_status:
                 customer_list.remove(customer)
+                return render(request, 'employees/index.html', context)
 
-            if request.method == 'POST' and 'confirm_pickup' in request.POST:
-                customer.is_collected = True
+        if request.method == 'POST' and 'confirm_pickup' in request.POST:
+            for customer in customer_list:
                 if customer.pickup_day == today:
-                    customer.amount_due += 7.50
+                    customer.amount_due += 7
                 if customer.specific_date == today_date:
                     customer.amount_due += 50
+                customer.is_collected = True
                 customer.save()
-                return render(request, 'employees/index.html', context)
 
         return render(request, 'employees/index.html', context)
 

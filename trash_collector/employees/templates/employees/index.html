@@ -19,14 +19,15 @@
   </tr>
   {% endfor %}
 </table>
-{% if customer.is_collected == True %}
-  {% else %}
+{% for customer in customers %}
+{% if customer.is_collected == False and forloop.first %}
   <form action="{% url 'employees:index' %}" method='POST'>
       {% csrf_token %}
   <button name="confirm_pickup" id="confirm_pickup" type="submit">Route Completed</button>
   </form>
-  {% endif %}
-
+{% else %}
+{% endif %}
+{% endfor %}
 
 <img src="https://maps.googleapis.com/maps/api/staticmap?center=40.714%2c%20-73.998&zoom=12&size=400x400&key=AIzaSyCbrvdmLudcLIt5j52ZZSwfCMyNkU9itqo"  >
   {% else %}

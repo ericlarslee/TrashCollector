@@ -14,7 +14,7 @@ class CustomerForm(ModelForm):
     class Meta:
         model = Customer
         fields = ['name', 'user', 'street', 'city', 'zipcode', 'specific_date', 'pickup_day', 'user',
-                  'account_status', 'projected_total', 'suspend_start', 'suspend_end']
+                  'account_status', 'suspend_start', 'suspend_end']
         labels = {
             'name': 'Name',
             'street': 'Street Address',
@@ -59,7 +59,7 @@ def create(request):
         city = request.POST.get('city')
         zipcode = request.POST.get('zipcode')
         new_customer = Customer(name=name, user=user, street=street, city=city, zipcode=zipcode,
-                                account_status=True, pickup_day='N/A', subtotal=0)
+                                account_status=True, pickup_day='N/A')
         new_customer.save()
         return HttpResponseRedirect(reverse('customers:index'))
     else:
@@ -72,7 +72,6 @@ def update_account_info(request):
     form = CustomerForm(request.POST or None, instance=customer)
     form.fields.pop('specific_date')
     form.fields.pop('user')
-    form.fields.pop('subtotal')
     form.fields.pop('account_status')
     form.fields.pop('pickup_day')
     form.fields.pop('suspend_start')
