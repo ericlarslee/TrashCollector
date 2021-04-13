@@ -35,7 +35,7 @@ def index(request):
     # Get the Customer model from the other app, it can now be used to query the db
     user = request.user
     employees = Employee.objects.all()
-    if not Employee.objects.filter(user_id=user.id):
+    if len(employees) == 0:
         return render(request, 'employees/update_account.html')
     else:
         for employee in employees:
@@ -46,20 +46,22 @@ def index(request):
                 else:
                     Customer = apps.get_model('customers.Customer')
                     customers = Customer.objects.all()
+                    customer_list = []
                     today = day_name()
                     today_date = date.today()
                     for customer in customers:
-                        if customer.account_status and customer.zipcode == employee.zipcode:
-                            if customer.pickup_day == today or customer.specific_date == today_date:
-                                filtered_date = customers.filter(specific_date=today_date)
-                                filtered_day = customers.filter(pickup_day=today)
-                                filtered = filtered_date | filtered_day
-
-                                context = {
-                                    'customers': filtered,
-                                    'employee': employee
-                                }
-                                return render(request, 'employees/index.html', context)
+                        if customer.pickup_day == today or customer.specific_date == today_date:
+                            customer_list.append(customer)
+                    for customer in customer_list:
+                        if customer.zipcode != employee.zipcode:
+                            customer_list.remove(customer)
+                        if not customer.account_status:
+                            customer_list.remove(customer)
+                    context = {
+                        'customers': customer_list,
+                        'employee': employee
+                    }
+                    return render(request, 'employees/index.html', context)
 
 
 def update(request):
