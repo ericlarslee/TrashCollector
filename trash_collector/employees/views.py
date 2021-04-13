@@ -55,11 +55,11 @@ def index(request):
                                 filtered_day = customers.filter(pickup_day=today)
                                 filtered = filtered_date | filtered_day
 
-                            context = {
-                                'customers': filtered,
-                                'employee': employee
-                            }
-                            return render(request, 'employees/index.html', context)
+                                context = {
+                                    'customers': filtered,
+                                    'employee': employee
+                                }
+                                return render(request, 'employees/index.html', context)
 
 
 def update(request):
