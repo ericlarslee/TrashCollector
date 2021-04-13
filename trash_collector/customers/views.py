@@ -14,7 +14,7 @@ class CustomerForm(ModelForm):
     class Meta:
         model = Customer
         fields = ['name', 'user', 'street', 'city', 'zipcode', 'specific_date', 'pickup_day', 'user',
-                  'account_status', 'subtotal', 'suspend_start', 'suspend_end']
+                  'account_status', 'projected_total', 'suspend_start', 'suspend_end']
         labels = {
             'name': 'Name',
             'street': 'Street Address',
@@ -161,16 +161,16 @@ def change_pickup_day(request):
         if customer.specific_date == '':
             customer.specific_date = None
             if customer.pickup_day == value:
-                customer.subtotal = 0
+                customer.projected_total = 0
             elif customer.pickup_day in days_of_week:
-                customer.subtotal = 35
+                customer.projected_total = 35
             customer.save()
         else:
             if customer.pickup_day == value:
-                customer.subtotal = 50
+                customer.projected_total = 50
 
             elif customer.pickup_day in days_of_week:
-                customer.subtotal = 85
+                customer.projected_total = 85
 
             customer.save()
 

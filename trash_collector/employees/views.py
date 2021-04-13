@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, reverse, get_object_or_404
+from django.shortcuts import render, reverse, get_object_or_404, redirect
 from .models import Employee
 from django import forms
 from django.contrib.admin import widgets
@@ -34,34 +34,42 @@ class EmployeeDateSelectionForm(forms.Form):
 def index(request):
     # Get the Customer model from the other app, it can now be used to query the db
     user = request.user
-    employees = Employee.objects.all()
-    if len(employees) == 0:
+    try:
+        employee = Employee.objects.get(user=user.id)
+    except:
         return render(request, 'employees/update_account.html')
     else:
-        for employee in employees:
-            if employee.user_id == user.pk:
-                employee = Employee.objects.get(user=user.id)
-                if employee.zipcode is None:
-                    return render(request, 'employees/update_account.html')
-                else:
-                    Customer = apps.get_model('customers.Customer')
-                    customers = Customer.objects.all()
-                    customer_list = []
-                    today = day_name()
-                    today_date = date.today()
-                    for customer in customers:
-                        if customer.pickup_day == today or customer.specific_date == today_date:
-                            customer_list.append(customer)
-                    for customer in customer_list:
-                        if customer.zipcode != employee.zipcode:
-                            customer_list.remove(customer)
-                        if not customer.account_status:
-                            customer_list.remove(customer)
-                    context = {
-                        'customers': customer_list,
-                        'employee': employee
-                    }
-                    return render(request, 'employees/index.html', context)
+        Customer = apps.get_model('customers.Customer')
+        customers = Customer.objects.all()
+        customer_list = []
+        today = day_name()
+        today_date = date.today()
+
+        context = {
+            'customers': customer_list,
+            'employee': employee
+        }
+
+        for customer in customers:
+            if customer.pickup_day == today or customer.specific_date == today_date:
+                customer_list.append(customer)
+        for customer in customer_list:
+            customer.is_collected = False
+            if customer.zipcode != employee.zipcode:
+                customer_list.remove(customer)
+            elif not customer.account_status:
+                customer_list.remove(customer)
+
+            if request.method == 'POST' and 'confirm_pickup' in request.POST:
+                customer.is_collected = True
+                if customer.pickup_day == today:
+                    customer.amount_due += 7.50
+                if customer.specific_date == today_date:
+                    customer.amount_due += 50
+                customer.save()
+                return render(request, 'employees/index.html', context)
+
+        return render(request, 'employees/index.html', context)
 
 
 def update(request):

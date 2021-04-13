@@ -15,10 +15,19 @@
   <tr>
     <td>{{customer.name}}</td>
     <td>{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
-    <td>Pickup Completed: <input type="checkbox" name="confirm_pickup" id="confirm_pickup"></td>
+<!--    <td>Pickup Completed: <input type="checkbox" name="confirmation" id="confirmation"></td>-->
   </tr>
   {% endfor %}
 </table>
+{% if customer.is_collected == True %}
+  {% else %}
+  <form action="{% url 'employees:index' %}" method='POST'>
+      {% csrf_token %}
+  <button name="confirm_pickup" id="confirm_pickup" type="submit">Route Completed</button>
+  </form>
+  {% endif %}
+
+
 <img src="https://maps.googleapis.com/maps/api/staticmap?center=40.714%2c%20-73.998&zoom=12&size=400x400&key=AIzaSyCbrvdmLudcLIt5j52ZZSwfCMyNkU9itqo"  >
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>

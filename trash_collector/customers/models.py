@@ -16,7 +16,9 @@ class Customer(models.Model):
     suspend_end = models.DateField(null=True, blank=True)
     pickup_day = models.CharField(max_length=50, blank=True)
     specific_date = models.DateField(null=True, blank=True)
-    subtotal = models.DecimalField(max_digits=5, decimal_places=2, blank=True)
+    projected_total = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0)
+    amount_due = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0)
+    is_collected = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
