@@ -29,12 +29,11 @@
     {% endfor %}
   </table>
 
-
 {% for customer in customers %}
 {% if customer.is_collected == False and forloop.first %}
   <form class="col" action="{% url 'employees:index' %}" method='POST'>
       {% csrf_token %}
-  <button name="confirm_pickup" id="confirm_pickup" type="submit" style="cursor: pointer;">Route Completed</button>
+  <button class="btn btn-dark" name="confirm_pickup" id="confirm_pickup" type="submit" style="cursor: pointer;">Route Completed</button>
   </form>
 {% else %}
 {% endif %}
