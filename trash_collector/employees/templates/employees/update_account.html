@@ -1,12 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %}{% block header %} Update Account Info {% endblock %}{% endblock %}
-
+{% block title %} Update Account Info{% endblock %}
+{% block header %}
+<div class="contiainer-fluid">
+    <h1 class="row no-gutters justify-content-center" style="margin-top:3%;">Update Account Info</h1>
+</div>
+ {% endblock %}
 {% block content %}
-    <form action="{% url 'employees:update' %}" enctype="multipart/form-data" method="post">
+<div class="container-fluid">
+    <form style="margin-top:3%;" class="row no-gutters justify-content-center" action="{% url 'employees:update' %}" enctype="multipart/form-data" method="post">
     {% csrf_token %}
-    <label>Name:</label><input type="text" name="name" id="name"><br>
-    <label>ZIP Code:</label><input type="" name="zipcode" id="zipcode"><br>
-    <input type="submit" value="Submit">
+    <label style="font-size:1.15rem;margin-right:5px;">Name:</label><input type="text" name="name" id="name" style="height: 5%;"><br>
+    <label style="font-size:1.15rem;margin-left:2%;margin-right:5px;">Zip Code: </label><input type="text" name="zipcode" id="zipcode" style="height: 5.5%;"><br>
+    <input type="submit" value="Submit" style="margin-left:9px;position:relative;bottom:2px;height:5%;background-color:#343A40;color:white;">
     </form>
+</div>
+<div class="container-fluid">
+    <div class="row no-gutters justify-content-center">
+    <button class="btn btn-dark" style="margin-top:7%;"><a href="{% url 'logout' %}" style="color:white;">Log Out</a></button>
+    </div>
+</div>
 {% endblock %}
