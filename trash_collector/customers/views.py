@@ -94,7 +94,6 @@ def update_account_status(request):
     form = CustomerForm(request.POST or None, instance=customer)
     form.fields.pop('specific_date')
     form.fields.pop('user')
-    form.fields.pop('subtotal')
     form.fields.pop('pickup_day')
     form.fields.pop('name')
     form.fields.pop('street')

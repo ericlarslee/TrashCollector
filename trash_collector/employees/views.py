@@ -2,7 +2,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404, redirect
 from .models import Employee
 from django import forms
-from django.contrib.admin import widgets
 from django.apps import apps
 from datetime import date, datetime, timedelta
 import calendar
@@ -43,24 +42,25 @@ def index(request):
         customers = Customer.objects.all()
         customer_list = []
         today = day_name()
-        pickup_status = False
+        addresses = []
         today_date = date.today()
 
         context = {
             'customers': customer_list,
             'employee': employee,
-            'pickup': pickup_status
+            'addresses': addresses
         }
 
         for customer in customers:
-            if customer.pickup_day == today or customer.specific_date == today_date:
+            if customer.account_status is True and customer.pickup_day == today or customer.account_status is True and customer.specific_date == today_date:
                 customer_list.append(customer)
+
         for customer in customer_list:
             if customer.zipcode != employee.zipcode:
                 customer_list.remove(customer)
-            elif not customer.account_status:
-                customer_list.remove(customer)
-                return render(request, 'employees/index.html', context)
+            address = customer.street.replace(' ', '+')
+            addresses.append(address)
+
 
         if request.method == 'POST' and 'confirm_pickup' in request.POST:
             for customer in customer_list:
@@ -99,6 +99,8 @@ def upcoming_pickups(request):
     employee = Employee.objects.get(user=user.id)
     form = EmployeeDateSelectionForm(request.POST or None)
 
+
+
     context_main = {
         'employee': employee,
         'customers': customers,
@@ -121,3 +123,7 @@ def upcoming_pickups(request):
                 return render(request, 'employees/upcoming_pickups.html', context)
 
     return render(request, 'employees/upcoming_pickups.html', context_main)
+
+
+def pickup_location(request):
+    pass

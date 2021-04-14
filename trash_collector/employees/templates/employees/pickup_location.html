@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{% block header %} Upcoming Pickups {% endblock %}{% endblock %}
+
+{% block content %}
+<table>
+  <tr>
+    <th>Customers</th>
+    <th>Address</th>
+  </tr>
+  {% for customer in customers %}
+  <tr>
+    <td>{{customer.name}}</td>
+    <td>{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+<img src="https://maps.googleapis.com/maps/api/staticmap?size=512x512&zoom=12&center=Chicago&format=png&style=feature:road.highway%7Celement:geometry%7Cvisibility:simplified%7Ccolor:0xc280e9&style=feature:transit.line%7Cvisibility:simplified%7Ccolor:0xbababa&style=feature:road.highway%7Celement:labels.text.stroke%7Cvisibility:on%7Ccolor:
+0xb06eba&style=feature:road.highway%7Celement:labels.text.fill%7Cvisibility:on%7Ccolor:0xffffff&key=AIzaSyCbrvdmLudcLIt5j52ZZSwfCMyNkU9itqo"  >
+  {% endblock %}

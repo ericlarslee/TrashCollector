@@ -9,13 +9,11 @@
   <tr>
     <th>Customers</th>
     <th>Address</th>
-    <th>Pickup Confirmation</th>
   </tr>
   {% for customer in customers %}
   <tr>
     <td>{{customer.name}}</td>
     <td>{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
-<!--    <td>Pickup Completed: <input type="checkbox" name="confirmation" id="confirmation"></td>-->
   </tr>
   {% endfor %}
 </table>
@@ -28,8 +26,10 @@
 {% else %}
 {% endif %}
 {% endfor %}
-
-<img src="https://maps.googleapis.com/maps/api/staticmap?center=40.714%2c%20-73.998&zoom=12&size=400x400&key=AIzaSyCbrvdmLudcLIt5j52ZZSwfCMyNkU9itqo"  >
+<img src="https://maps.googleapis.com/maps/api/staticmap?center=99504&zoom=13&scale=1&size
+=600x500&maptype=hybrid&key=AIzaSyCbrvdmLudcLIt5j52ZZSwfCMyNkU9itqo&format=png&visual_refresh
+=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C{{addresses.0}},Anchorage&markers
+=size:mid%7Ccolor:0xff0000%7Clabel:%7C{{addresses.1}},Anchorage&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C{{addresses.2}},+Anchorage"  >
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
