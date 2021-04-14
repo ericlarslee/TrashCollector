@@ -17,19 +17,22 @@ Customer Home
       <table>
         <tr>
           {% if customer.account_status is True %}
-          <th>Account Status:  </th><td>&nbsp;Active</td>
+          <th>Account Status:  </th>
+          <td>&nbsp;Active</td>
         </tr>
           {% else %}
         <tr>
-          <th>Account Status:  </th><td>Suspended</td>
+          <th>Account Status:  </th>
+          <td>&nbsp;Suspended</td>
         </tr>
         {% endif %}
         <tr>
-          <th>Address:</th><td>{{customer.street}} / {{customer.zipcode}}</td>
+          <th>Address:</th>
+          <td>&nbsp;{{customer.street}} / {{customer.zipcode}}</td>
         </tr>
         <tr>
           {% if customer.pickup != 'N/A' %}
-          <th>Pickup Day:</th><td>{{customer.pickup_day}}</td>
+          <th>Pickup Day:</th><td>&nbsp;{{customer.pickup_day}}</td>
           {% else %}
           <th>Pickup Day:</th><td>Not Selected</td>
           {% endif %}
@@ -59,7 +62,9 @@ Customer Home
   {% endif %}
   {% if not customer%}
     <a href="{% url 'customers:create_account' %}" >
-    <button>Start your service today!</button>
+    <button class="btn btn-dark" type="button">Start your service today!</button>
     </a>
+<a href="{% url 'logout' %}"><button type="button" class="btn btn-dark" >Log Out</button></a>
+
   {% endif %}
 {% endblock %}

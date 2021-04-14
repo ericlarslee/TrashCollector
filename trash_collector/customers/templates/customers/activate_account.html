@@ -11,7 +11,7 @@
     {% if customer.account_status is False %}
     <form action="{% url 'customers:reactivate_account' %}" method='POST'>
         {% csrf_token %}
-    <button name="activate" type="submit" value="Activate">Re-Activate Account</button>
+    <button class="btn btn-dark" name="activate" type="submit" value="Activate">Re-Activate Account</button>
     </form>
     {% endif %}
 {% endblock %}

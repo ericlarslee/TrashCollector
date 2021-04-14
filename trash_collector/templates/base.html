@@ -46,11 +46,7 @@
         {% endif %}
       </li>
       <li class="nav-item">
-        {% if customer.pickup_day is 'N/A' or customer.specific_date is not None %}
-        <a class="nav-link" href="{% url 'customers:change_pickup_day' %}">Start Service</a>
-        {% else %}
-        <a class="nav-link" href="{% url 'customers:change_pickup_day' %}">Update Service</a>
-        {% endif %}
+        <a class="nav-link" href="{% url 'customers:change_pickup_day' %}">Start / Update Service</a>
       </li>
     </ul>
   </div>

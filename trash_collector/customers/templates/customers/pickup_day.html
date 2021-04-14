@@ -4,15 +4,9 @@
 
 
 {% block content %}
-{% if customer.pickup_day is 'N/A' and customer.specific_date is None %}
 <div class="container-fluid">
-    <h1 class="row no-gutter justify-content-center">Start Service</h1>
+    <h1 class="row no-gutter justify-content-center">Services</h1>
 </div>
-{% else %}
-<div class="container-fluid">
-    <h1 class="row no-gutters justify-content-center">Update Service</h1>
-</div>
-{% endif %}
 <div class="container-fluid">
     <div class="row no-gutters justify-content-center" style="margin-top:2rem;margin-bottom:3rem;">
         <table class="table table-sm" style="width:50%;text-align:center;">
@@ -43,7 +37,7 @@
     </select>
     <label style="font-size:1.25rem;margin-right:5px;">Select Pickup Date:</label><input style="height:90%;" type="date" name="specific_date" id="specific_date">
     <button class="btn btn-dark" type="submit" style="height:90%;position:relative;bottom:.10rem;">
-        <span style="vertical-align:start;">Update Account Status</span>
+        <span style="vertical-align:start;">Start/Update Service</span>
     </button>
   </form>
 </div>
