@@ -1,16 +1,14 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, reverse, get_object_or_404, redirect
+from django.shortcuts import render, reverse
 from .models import Employee
 from django import forms
 from django.apps import apps
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 import calendar
 from django.forms import ModelForm
 
 
 # Create your views here.
-
-# TODO: Create a function for each path created in employees/urls.py. Each will need a template as well.
 
 class EmployeeForm(ModelForm):
     class Meta:
@@ -32,7 +30,6 @@ class EmployeeDateSelectionForm(forms.Form):
 
 
 def index(request):
-    # Get the Customer model from the other app, it can now be used to query the db
     user = request.user
     try:
         employee = Employee.objects.get(user=user.id)

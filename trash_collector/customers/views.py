@@ -46,22 +46,18 @@ class CustomerSuspendForm(forms.Form):
 def index(request):
     # get the logged in user within any view function
     user = request.user
-    customers = Customer.objects.all()
+    try:
+        customer = Customer.objects.get(user=user.id)
+        context = {
+            'customer': customer
+        }
+        return render(request, 'customers/index.html', context)
 
-    if len(customers) == 0:
-        return render(request, 'customers/index.html')
-    else:
-        for customer in customers:
-            if customer.user_id == user.pk:
-                customer = Customer.objects.get(user=user.id)
-                context = {
-                    'customer': customer
-                }
-
-                return render(request, 'customers/index.html', context)
-
-        else:
-            return render(request, 'customers/index.html')
+    except:
+        context_user = {
+            'user': user
+        }
+        return render(request, 'customers/create.html', context_user)
 
 
 def create(request):
