@@ -3,7 +3,6 @@
 {% block title %}{% block header %} Activate Account {% endblock %}{% endblock %}
 
 {% block content %}
-{{customer.name}}<br>
     {% if customer.account_status is True %}
     <span>Account is currently active!</span><br>
     {% else %}

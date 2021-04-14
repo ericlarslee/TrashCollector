@@ -1,6 +1,8 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, reverse, get_object_or_404, redirect
 from .models import Customer
+from django import forms
+from datetime import datetime,date,timedelta
 from django.forms import ModelForm, SelectDateWidget
 from datetime import date
 
@@ -30,10 +32,22 @@ class CustomerForm(ModelForm):
         }
 
 
+class CustomerSuspendForm(forms.Form):
+    today = date.today()
+    max_date = today + timedelta(days=90)
+    start_date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.widgets.DateInput(attrs={'type': 'date', 'min': today, 'max': max_date}),
+        label='Start Date')
+    end_date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.widgets.DateInput(attrs={'type': 'date', 'min': today, 'max': max_date}),
+        label=' End Date ')
+
+
 def index(request):
     # get the logged in user within any view function
     user = request.user
-    print(user)
     customers = Customer.objects.all()
 
     if len(customers) == 0:
@@ -86,46 +100,36 @@ def update_account_info(request):
     }
     return render(request, 'customers/update_account.html', context)
 
-#If suspense data is not date.today, account must stay active
-
 
 def update_account_status(request):
-    user = request.user
-    customer = get_object_or_404(Customer, user_id=user.pk)
-    form = CustomerForm(request.POST or None, instance=customer)
-    form.fields.pop('specific_date')
-    form.fields.pop('user')
-    form.fields.pop('pickup_day')
-    form.fields.pop('name')
-    form.fields.pop('street')
-    form.fields.pop('city')
-    form.fields.pop('zipcode')
-    form.fields.pop('account_status')
-
+    customers = Customer.objects.all()
     today_date = date.today()
+    user = request.user
+    customer = Customer.objects.get(user=user.id)
+    form = CustomerSuspendForm(request.POST or None)
 
-    context = {
-        'form': form,
-        'customer': customer
+    context_main = {
+        'customer': customer,
+        'form': form
     }
-#Allow customers to indicate when they want to stop service, change account status in redirect(customers:index)
+
     if form.is_valid():
-        form.save()
-        # Checks if suspend date has started, will suspend account if True
+        customer.suspend_start = form.cleaned_data.get('start_date')
+        customer.suspend_end = form.cleaned_data.get('end_date')
         if customer.suspend_start <= today_date <= customer.suspend_end:
             customer.account_status = False
-            print('pass')
             customer.save()
+            return redirect('customers:index')
         else:
             customer.account_status = True
             customer.save()
-        return redirect('customers:index')
-    else:
-        return render(request, 'customers/account_status.html', context)
+            return redirect('customers:index')
 
+    return render(request, 'customers/account_status.html', context_main)
 
 
 #Might be able to insert entire function into update account status function
+
 def reactivate_account(request):
     print('Activate!!!')
     user = request.user
@@ -137,6 +141,8 @@ def reactivate_account(request):
 
     if request.method == 'POST' and 'activate' in request.POST:
         customer.account_status = True
+        customer.suspend_start = None
+        customer.suspend_end = None
         customer.save()
         return redirect('customers:index')
     else:

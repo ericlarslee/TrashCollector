@@ -1,18 +1,26 @@
 {% extends 'base.html' %}
 
-{% block title %}{% block header %} Update Account Status {% endblock %}{% endblock %}
-
+{% block title %}Account Status{% endblock %}
+{% block header %}
+<div class="container-fluid">
+<h1 class="row no-gutters justify-content-center" style="margin-top: 3%;font-size: 4rem;">Account Status</h1>
+</div>
+{% endblock %}{
 {% block content %}
-{{customer.name}}<br>
-    {% if customer.account_status is True %}
-    <span>Account Status: Active</span><br>
-    {% else %}
-    <span>Account Status: Suspended</span><br>
-    {% endif %}
-
-<form action="{% url 'customers:update_account_status' %}" enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update Account Status</button>
-  </form>
+<div class="container-fluid">
+        <div class="row no-gutters justify-content-center" style="margin-top:1.5%">
+            {% if customer.account_status is True %}
+            <h3>Current Status: Active</h3><br>
+            {% else %}
+            <h3>Current Status: Suspended</h3><br>
+            {% endif %}
+        </div>
+        <div class="row no-gutters justify-content-center" style="margin-top:1.5%;">
+            <form  class="customer__account__status" action="{% url 'customers:update_account_status' %}" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-dark" style="position:relative;left:2rem;margin-top:5%;" >Update Account Status</button>
+            </form>
+        </div>
+</div>
 {% endblock %}
