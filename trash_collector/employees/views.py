@@ -18,7 +18,7 @@ class EmployeeForm(ModelForm):
         fields = ['name', 'zipcode']
         labels = {
             'name': 'Name',
-            'zipcode': 'Zipcode'
+            'zipcode': 'Zip Code'
         }
 
 

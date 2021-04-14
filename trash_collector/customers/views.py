@@ -19,6 +19,7 @@ class CustomerForm(ModelForm):
             'name': 'Name',
             'street': 'Street Address',
             'city': 'City',
+            'zipcode': 'Zip Code',
             'suspend_end': 'Suspend End',
             'suspend_start': 'Suspend Start'
 

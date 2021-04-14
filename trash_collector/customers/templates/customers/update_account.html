@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}{% block header %} Update Account Info {% endblock %}{% endblock %}
+{% block title %}Update Account Info{% endblock %}
 
 {% block content %}
-<form action="{% url 'customers:update_account_info' %}" method="post">
+<div class="container-fluid">
+    <h1 class="row no-gutters justify-content-center">Update Account</h1>
+</div>
+<div class="container-fluid">
+    <div class="row no-gutters justify-content-center" style="margin-top: 7%;">
+<form class="customer__update__account"  action="{% url 'customers:update_account_info' %}" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update Account Information</button>
+    {{ form.as_table }}
+    <button type="submit" class="btn btn-dark" style="color:white;position:relative;bottom:2.5px;">Update Account Information</button>
   </form>
+    </div>
+</div>
 {% endblock %}
