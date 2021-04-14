@@ -5,7 +5,7 @@
 {% block content %}
   {% if user.is_authenticated%}
   {% if not customer %}
-  <div class="container-fluid" style="line-height: 3rem;">
+  <div class="container-fluid" style="line-height: 2.5rem;">
     <h1 class="row justify-content-center no-gutters">Hello {{user.username}}!</h1>
     {%else%}
     <h1 class="row justify-content-center no-gutters" style="padding-top: 2rem;">Hello {{customer.name}}!</h1>
@@ -42,7 +42,7 @@
       </table>
     </div>
   </div>
-  <div class="container-fluid" style="margin-top:15%;">
+  <div class="container-fluid" style="margin-top:7%;">
     <div class="content row no-gutters justify-content-center" >
       <button type="button" class="btn btn-dark">
         <a href="{% url 'logout' %}">Log Out</a>

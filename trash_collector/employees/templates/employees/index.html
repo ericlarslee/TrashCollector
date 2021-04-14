@@ -1,43 +1,52 @@
 {% extends 'base.html' %}
 {%load static%}
 
-{% block title %}{% block header %} Employee Home {% endblock %}{% endblock %}
+{% block title %}{% block header %} {% endblock %}{% endblock %}
 
 {% block head %}
-<style>
-  .main {justify-content: center;}
-</style>
 {% endblock head %}
 {% block content %}
+<div class="container-fluid header">
   {% if user.is_authenticated %}
-    Hello {{employee.name}}!
-<div class="container-fluid main">
-  <table>
-    <tr>
+  {% if not employee %}
+  <h1 style="padding-left: 10%; padding-top: 10%;">Hello {{user.id}}!</h1>
+  {% else %}
+  <h1 style="padding-left: 10%; margin-top: 10%;">Hello {{employee.name}}!</h1>
+  {% endif %}
+</div>
+<div class="container-fluid">
+<div class="row no-gutters justify-content-center align-items-center customer__table">
+  <table class="col" style="width: 35%; text-align:center; line-height: 2.5rem; ">
+    <tr style="font-size: 1.25rem">
       <th>Customers</th>
       <th>Address</th>
     </tr>
     {% for customer in customers %}
-    <tr>
-      <td>{{customer.name}}</td>
-      <td>{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
+    <tr style="font-size: 1.15rem">
+      <td>&nbsp;{{customer.name}}</td>
+      <td style="padding-left: 2%;">&nbsp;{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
     </tr>
     {% endfor %}
   </table>
-</div>
+
+
 {% for customer in customers %}
 {% if customer.is_collected == False and forloop.first %}
-  <form action="{% url 'employees:index' %}" method='POST'>
+  <form class="col" action="{% url 'employees:index' %}" method='POST'>
       {% csrf_token %}
-  <button name="confirm_pickup" id="confirm_pickup" type="submit">Route Completed</button>
+  <button name="confirm_pickup" id="confirm_pickup" type="submit" style="cursor: pointer;">Route Completed</button>
   </form>
 {% else %}
 {% endif %}
 {% endfor %}
+<div class="col-5 justify-content-start">
 <img src="https://maps.googleapis.com/maps/api/staticmap?center=99504&zoom=13&scale=1&size
 =600x500&maptype=hybrid&key=AIzaSyCbrvdmLudcLIt5j52ZZSwfCMyNkU9itqo&format=png&visual_refresh
-=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C{{addresses.0}},Anchorage&markers
-=size:mid%7Ccolor:0xff0000%7Clabel:%7C{{addresses.1}},Anchorage&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C{{addresses.2}},+Anchorage"  >
+=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C{{addresses.0}},Anchorage&markers
+=size:mid%7Ccolor:0xff0000%7Clabel:2%7C{{addresses.1}},Anchorage&markers=size:mid%7Ccolor:0xff0000%7Clabel:3%7C{{addresses.2}},+Anchorage"  >
+</div>
+</div>
+</div>
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
