@@ -1,24 +1,55 @@
 {% extends 'base.html' %}
 
-{% block title %}{% block header %} Customer Home {% endblock %}{% endblock %}
-
+{% block title %}{% block header %}
+{% endblock %}{% endblock %}
 {% block content %}
   {% if user.is_authenticated%}
   {% if not customer %}
-  Hello {{user.username}}!
-  {%else%}
-  <h2>Hello {{customer.name}}!</h2>
-  <div>
-    <h3>Account Details</h3>
-    {% if customer.account_status is True %}
-    <span>Account Status: Active</span><br>
-    {% else %}
-    <span>Account Status: Suspended</span><br>
-    {% endif %}
-    <span>Address: {{customer.street}},{{customer.city}} / {{customer.zipcode}}</span><br>
-    <span>Pickup Day: {{customer.pickup_day}}</span><br>
-    <span>Subtotal: {{customer.subtotal}}</span><br>
+  <div class="container-fluid" style="line-height: 3rem;">
+    <h1 class="row justify-content-center no-gutters">Hello {{user.username}}!</h1>
+    {%else%}
+    <h1 class="row justify-content-center no-gutters" style="padding-top: 2rem;">Hello {{customer.name}}!</h1>
   </div>
+  <div class="container-fluid" style="line-height: 3rem;">
+    <h3 class="row justify-content-center no-gutters" style="font-size: 2rem; padding-bottom: 2rem; padding-top: 2rem;">Account Details</h3>
+    <div class="row main__content justify-content-center no-gutters" style="font-size: 1.25rem;margin-left:2.5%;">
+      <table>
+        <tr>
+          {% if customer.account_status is True %}
+          <th>Account Status:  </th><td>&nbsp;Active</td>
+        </tr>
+          {% else %}
+        <tr>
+          <th>Account Status:  </th><td>Suspended</td>
+        </tr>
+        {% endif %}
+        <tr>
+          <th>Address:</th><td>{{customer.street}} / {{customer.zipcode}}</td>
+        </tr>
+        <tr>
+          {% if customer.pickup != 'N/A' %}
+          <th>Pickup Day:</th><td>{{customer.pickup_day}}</td>
+          {% else %}
+          <th>Pickup Day:</th><td>Not Selected</td>
+          {% endif %}
+        </tr>
+        <tr>
+          <th>Projected Total:</th><td>&nbsp;${{customer.projected_total}}</td>
+        </tr>
+        <tr>
+          <th>Amount Due:</th><td>&nbsp;${{customer.amount_due}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="container-fluid" style="margin-top:15%;">
+    <div class="content row no-gutters justify-content-center" >
+      <button type="button" class="btn btn-dark">
+        <a href="{% url 'logout' %}">Log Out</a>
+      </button>
+    </div>
+  </div>
+
 {% endif%}
   {% else %}
     <p>You are at the customer index, but you are not logged in.</p>

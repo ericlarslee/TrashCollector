@@ -3,23 +3,28 @@
 
 {% block title %}{% block header %} Employee Home {% endblock %}{% endblock %}
 
-{% block head %}{% block css %}{% endblock %}{% endblock head %}
-
+{% block head %}
+<style>
+  .main {justify-content: center;}
+</style>
+{% endblock head %}
 {% block content %}
   {% if user.is_authenticated %}
     Hello {{employee.name}}!
-<table>
-  <tr>
-    <th>Customers</th>
-    <th>Address</th>
-  </tr>
-  {% for customer in customers %}
-  <tr>
-    <td>{{customer.name}}</td>
-    <td>{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
-  </tr>
-  {% endfor %}
-</table>
+<div class="container-fluid main">
+  <table>
+    <tr>
+      <th>Customers</th>
+      <th>Address</th>
+    </tr>
+    {% for customer in customers %}
+    <tr>
+      <td>{{customer.name}}</td>
+      <td>{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
 {% for customer in customers %}
 {% if customer.is_collected == False and forloop.first %}
   <form action="{% url 'employees:index' %}" method='POST'>
