@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{%load static%}
 
 {% block title %}{% block header %} Employee Home {% endblock %}{% endblock %}
+
+{% block head %}{% block css %}{% endblock %}{% endblock head %}
 
 {% block content %}
   {% if user.is_authenticated %}
