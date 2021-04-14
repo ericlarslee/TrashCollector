@@ -9,14 +9,14 @@
 <div class="container-fluid header">
   {% if user.is_authenticated %}
   {% if not employee %}
-  <h1 style="padding-left: 10%; padding-top: 10%;">Hello {{user.id}}!</h1>
+  <h1 style="padding-left: 10%; margin-top: 5%;">Hello {{user.id}}!</h1>
   {% else %}
-  <h1 style="padding-left: 10%; margin-top: 10%;">Hello {{employee.name}}!</h1>
+  <h1 style="padding-left: 10%; margin-top: 5%;">Hello {{employee.name}}!</h1>
   {% endif %}
 </div>
 <div class="container-fluid">
 <div class="row no-gutters justify-content-center align-items-center customer__table">
-  <table class="col" style="width: 35%; text-align:center; line-height: 2.5rem; ">
+  <table class="col-4" style="width: 35%; text-align:center; line-height: 2.5rem; ">
     <tr style="font-size: 1.25rem">
       <th>Customers</th>
       <th>Address</th>
@@ -45,7 +45,12 @@
 =true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C{{addresses.0}},Anchorage&markers
 =size:mid%7Ccolor:0xff0000%7Clabel:2%7C{{addresses.1}},Anchorage&markers=size:mid%7Ccolor:0xff0000%7Clabel:3%7C{{addresses.2}},+Anchorage"  >
 </div>
+<div class="col-8" style="position:relative;bottom: 3.5rem;">
+  <button type="button" class="btn btn-dark"><a href="{% url 'logout' %}" style="color:white;">Log Out</a></button>
 </div>
+
+</div>
+
 </div>
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>

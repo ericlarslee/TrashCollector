@@ -27,7 +27,8 @@ class EmployeeDateSelectionForm(forms.Form):
     end_date = today + timedelta(days=6)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.widgets.DateInput(attrs={'type': 'date', 'min': today, 'max': end_date}))
+        widget=forms.widgets.DateInput(attrs={'type': 'date', 'min': today, 'max': end_date}),
+        label='')
 
 
 def index(request):

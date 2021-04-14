@@ -1,24 +1,35 @@
 {% extends 'base.html' %}
 
-{% block title %}{% block header %} Upcoming Pickups {% endblock %}{% endblock %}
+{% block title %}Upcoming Pickups{% endblock %}{% block header %}
+<div class="container-fluid">
+  <h1 class="row no-gutters justify-content-center" style="margin-bottom: 7%;">Upcoming Pickups</h1>
+</div>
+
+{% endblock %}
 
 {% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center no-gutters" style="font-size:  1.2rem">
+  <form action="{% url 'employees:upcoming_pickups' %}" enctype="multipart/form-data" method="post">
+  {% csrf_token %}
+  <span>{{ form.as_table }}</span>
+  <input type="submit" value="Submit">
+  </form>
+    </div>
+  <div class="row no-gutters justify-content-center">
+  <table class="table table-sm" style="margin-top: 7%;width: 50%;text-align: center; background-color: black;">
+    <tr style="font-size: 1.7rem;">
+      <th>Customers</th>
+      <th>Address</th>
+    </tr>
+    {% for customer in customers %}
+    <tr>
+      <td>{{customer.name}}</td>
+      <td>{{customer.street}} / {{customer.zipcode}} / {{customer.city}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+    </div>
 
-<form action="{% url 'employees:upcoming_pickups' %}" enctype="multipart/form-data" method="post">
-{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit">
-</form>
-<table>
-  <tr>
-    <th>Customers</th>
-    <th>Address</th>
-  </tr>
-  {% for customer in customers %}
-  <tr>
-    <td>{{customer.name}}</td>
-    <td>{{customer.street}}/{{customer.zipcode}}/{{customer.city}}</td>
-  </tr>
-  {% endfor %}
-</table>
+</div>
   {% endblock %}
