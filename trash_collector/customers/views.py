@@ -9,8 +9,6 @@ from datetime import date
 
 # Create your views here.
 
-# TODO: Create a function for each path created in customers/urls.py. Each will need a template as well.
-
 
 class CustomerForm(ModelForm):
     class Meta:
@@ -102,7 +100,6 @@ def update_account_info(request):
 
 
 def update_account_status(request):
-    customers = Customer.objects.all()
     today_date = date.today()
     user = request.user
     customer = Customer.objects.get(user=user.id)
