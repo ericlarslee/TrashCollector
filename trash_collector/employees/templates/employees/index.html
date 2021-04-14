@@ -31,7 +31,8 @@
 {% if customer.is_collected == False and forloop.first %}
   <form class="col" action="{% url 'employees:index' %}" method='POST'>
       {% csrf_token %}
-  <button class="btn btn-dark" name="confirm_pickup" id="confirm_pickup" type="submit" style="cursor: pointer;">Route Completed</button>
+    <button class="btn btn-dark" name="confirm_pickup" id="confirm_pickup" type="submit"
+          style="cursor: pointer;margin-left:3rem;position:relative;top:13.5rem;right:30rem;">Route Completed</button>
   </form>
 {% else %}
 {% endif %}
@@ -43,7 +44,7 @@
 =size:mid%7Ccolor:0xff0000%7Clabel:2%7C{{addresses.1}},Anchorage&markers=size:mid%7Ccolor:0xff0000%7Clabel:3%7C{{addresses.2}},+Anchorage"  >
 </div>
 <div class="col-8" style="position:relative;bottom: 3.5rem;">
-  <button type="button" class="btn btn-dark"><a href="{% url 'logout' %}" style="color:white;">Log Out</a></button>
+  <button type="button" class="btn btn-dark" style="position:relative;left:10rem;"><a href="{% url 'logout' %}" style="color:white;">Log Out</a></button>
 </div>
 
 </div>
