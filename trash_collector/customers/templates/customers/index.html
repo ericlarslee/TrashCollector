@@ -31,12 +31,18 @@ Customer Home
           <td>&nbsp;{{customer.street}} / {{customer.zipcode}}</td>
         </tr>
         <tr>
-          {% if customer.pickup != 'N/A' %}
+          {% if customer.pickup_day != 'N/A' %}
           <th>Pickup Day:</th><td>&nbsp;{{customer.pickup_day}}</td>
           {% else %}
-          <th>Pickup Day:</th><td>Not Selected</td>
+          <th>Pickup Day:</th><td>&nbsp;Not Selected</td>
           {% endif %}
         </tr>
+        {% if customer.specific_date is not None %}
+        <tr>
+          <th>One-Time Pickup:</th><td>&nbsp;{{customer.specific_date}}</td>
+        </tr>
+        {% else %}
+        {% endif %}
         <tr>
           <th>Projected Total:</th><td>&nbsp;${{customer.projected_total}}</td>
         </tr>

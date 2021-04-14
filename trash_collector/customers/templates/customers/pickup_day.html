@@ -27,7 +27,7 @@
 <form action="{% url 'customers:change_pickup_day' %}" method="post">
     {% csrf_token %}
     <label for="pickup_day" style="font-size:1.25rem;">Select Pickup Day: </label>
-    <select name="pickup_day" id="pickup_day" style="height:90%;width:130px;margin-right:9px;">
+    <select name="pickup_day" id="pickup_day" style="height:90%;width:130px;margin-right:9px;cursor:pointer;">
         <option value="N/A"></option>
         <option value="Monday">Monday</option>
         <option value="Tuesday">Tuesday</option>
@@ -35,9 +35,9 @@
         <option value="Thursday">Thursday</option>
         <option value="Friday">Friday</option>
     </select>
-    <label style="font-size:1.25rem;margin-right:5px;">Select Pickup Date:</label><input style="height:90%;" type="date" name="specific_date" id="specific_date">
-    <button class="btn btn-dark" type="submit" style="height:90%;position:relative;bottom:.10rem;">
-        <span style="vertical-align:start;">Start/Update Service</span>
+    <label style="font-size:1.25rem;margin-right:5px;">Select Pickup Date:</label><input style="height:90%;width:13.7rem;cursor:pointer;" type="date" name="specific_date" id="specific_date">
+    <button class="btn btn-dark" type="submit" style="height:90%;position:relative;bottom:.10rem;left:1.5rem;">
+        <span style="vertical-align:start;">Submit</span>
     </button>
   </form>
 </div>
