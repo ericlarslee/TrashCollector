@@ -1,13 +1,19 @@
 
 {% extends 'base.html' %}
 
-{% block title %}{% block header %}Login Page{% endblock %}{% endblock %}
+{% block title %}Login Page{% endblock %}
 
 {% block content %}
-<h2>Log In</h2>
-<form method="post">
+<div class="container-fluid">
+<h2 class="row no-gutters justify-content-center" style="font-size:3rem;margin-top:5rem;">Log In</h2>
+<div class="row no-gutters justify-content-center">
+<form style="margin-top:2rem;margin-right:2rem;font-size:1.25rem;"  method="post">
   {% csrf_token %}
   {{ form.as_p }}
-    <button type="submit" >Login</button>
+  <button class="btn btn-dark" style="position:relative;left:6.5rem;" type="submit" ><a href="{% url 'accounts:register' %}"> Sign Up</a></button>
+  <button class="btn btn-dark" style="position:relative;left:8rem;" type="submit" >Login</button>
+
 </form>
+</div>
+</div>
 {% endblock %}

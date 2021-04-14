@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 {%load static%}
 
-{% block title %}{% block header %} {% endblock %}{% endblock %}
+{% block title %}Employee Home{% endblock %}
 
-{% block head %}
-{% endblock head %}
 {% block content %}
 <div class="container-fluid header">
   {% if user.is_authenticated %}
