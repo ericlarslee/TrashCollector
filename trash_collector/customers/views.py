@@ -168,14 +168,14 @@ def change_pickup_day(request):
             if customer.pickup_day == value:
                 customer.projected_total = 0
             elif customer.pickup_day in days_of_week:
-                customer.projected_total = 35
+                customer.projected_total = 28
             customer.save()
         else:
             if customer.pickup_day == value:
                 customer.projected_total = 50
 
             elif customer.pickup_day in days_of_week:
-                customer.projected_total = 85
+                customer.projected_total = 78
 
             customer.save()
 

@@ -1,26 +1,39 @@
 {% extends 'base.html' %}
 
-{% block title %}{% block header %} Pickup Day / One-Time Pickup {% endblock %}{% endblock %}
+{% block title %} Start Service | Update Service {% endblock %}
+
 
 {% block content %}
-<table>
-    <tr>
-        <th>Rates</th>
-    </tr>
-    <tr>
-        <td>Monthly</td>
-        <td> $28 </td>
-
-    </tr>
-    <tr>
-        <td>One-Time</td>
-        <td> $50 </td>
-    </tr>
-</table>
+{% if customer.pickup_day is 'N/A' and customer.specific_date is None %}
+<div class="container-fluid">
+    <h1 class="row no-gutter justify-content-center">Start Service</h1>
+</div>
+{% else %}
+<div class="container-fluid">
+    <h1 class="row no-gutters justify-content-center">Update Service</h1>
+</div>
+{% endif %}
+<div class="container-fluid">
+    <div class="row no-gutters justify-content-center" style="margin-top:2rem;margin-bottom:3rem;">
+        <table class="table table-sm" style="width:50%;text-align:center;">
+            <tr>
+                <th>Rates</th>
+                <td>Monthly</td>
+                <td>One-Time</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>$28</td>
+                <td> $50 </td>
+            </tr>
+        </table>
+        </div>
+ </div>
+<div class="row no-gutters justify-content-center">
 <form action="{% url 'customers:change_pickup_day' %}" method="post">
     {% csrf_token %}
-    <label for="pickup_day">Select Pickup Day: </label>
-    <select name="pickup_day" id="pickup_day">
+    <label for="pickup_day" style="font-size:1.25rem;">Select Pickup Day: </label>
+    <select name="pickup_day" id="pickup_day" style="height:90%;width:130px;margin-right:9px;">
         <option value="N/A"></option>
         <option value="Monday">Monday</option>
         <option value="Tuesday">Tuesday</option>
@@ -28,7 +41,10 @@
         <option value="Thursday">Thursday</option>
         <option value="Friday">Friday</option>
     </select>
-    <label>Specific Date: </label><input type="date" name="specific_date" id="specific_date">
-    <button type="submit">Update Account Status</button>
+    <label style="font-size:1.25rem;margin-right:5px;">Select Pickup Date:</label><input style="height:90%;" type="date" name="specific_date" id="specific_date">
+    <button class="btn btn-dark" type="submit" style="height:90%;position:relative;bottom:.10rem;">
+        <span style="vertical-align:start;">Update Account Status</span>
+    </button>
   </form>
+</div>
 {% endblock %}
