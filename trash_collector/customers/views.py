@@ -146,7 +146,7 @@ def change_pickup_day(request):
     user = request.user
     customer = get_object_or_404(Customer, user_id=user.pk)
     context = {
-        'customer': customer
+        'customer': customer,
     }
     days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     if request.method == 'POST':
@@ -174,4 +174,4 @@ def change_pickup_day(request):
 
         return HttpResponseRedirect(reverse('customers:index'), context)
     else:
-        return render(request, 'customers/pickup_day.html')
+        return render(request, 'customers/pickup_day.html', context)
