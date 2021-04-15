@@ -13,7 +13,7 @@
   <form action="{% url 'employees:upcoming_pickups' %}" enctype="multipart/form-data" method="post">
   {% csrf_token %}
   <span>{{ form.as_table }}</span>
-  <input type="submit" value="Submit">
+  <button class="btn btn-dark" type="submit" value="Submit" style="position:relative;bottom:2.5px;">Submit</button>
   </form>
     </div>
   <div class="row no-gutters justify-content-center">
